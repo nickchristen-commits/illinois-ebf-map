@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/nces/*"
+  to = "https://nces.ed.gov/:splat"
+  status = 200
+  force = true
