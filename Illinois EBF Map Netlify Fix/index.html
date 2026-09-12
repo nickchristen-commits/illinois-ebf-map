@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive map of FY2027 Illinois Evidence-Based Funding adequacy by school district.">
+  <title>Illinois School Funding Adequacy Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <header class="site-header">
+      <div class="title-block">
+        <div class="kicker">Illinois Evidence-Based Funding • FY2027</div>
+        <h1>How Far Is Your School District From Full Funding?</h1>
+        <p>Explore every Illinois school district’s percentage of adequacy and dollar gap under the Evidence-Based Funding formula.</p>
+      </div>
+      <div class="source-note">Funding data: Illinois State Board of Education • District boundaries: NCES EDGE</div>
+    </header>
+
+    <section class="kpi-strip" aria-label="Statewide summary">
+      <div class="kpi"><span class="kpi-value" id="kpiGap">—</span><span class="kpi-label">Statewide funding gap</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpiUnder90">—</span><span class="kpi-label">Districts below 90%</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpiUnder100">—</span><span class="kpi-label">Districts below adequacy</span></div>
+      <div class="kpi"><span class="kpi-value" id="kpiIFT">—</span><span class="kpi-label">IFT-affiliated districts</span></div>
+    </section>
+
+    <main class="main-grid">
+      <aside class="controls-panel">
+        <div class="search-wrap">
+          <label for="districtSearch">Find a school district</label>
+          <div class="search-row">
+            <input id="districtSearch" type="search" placeholder="Waukegan, Peoria, Rockford…" autocomplete="off">
+            <button id="clearSearch" class="icon-btn" type="button" aria-label="Clear search">×</button>
+          </div>
+          <div id="searchResults" class="search-results" role="listbox"></div>
+        </div>
+
+        <div class="control-section">
+          <label for="mapMetric">Color map by</label>
+          <select id="mapMetric">
+            <option value="adequacy">FY27 % of adequacy</option>
+            <option value="gapPerStudent">Funding gap per student</option>
+            <option value="change">Change from FY26</option>
+          </select>
+        </div>
+
+        <div class="control-section">
+          <div class="control-heading">Show districts</div>
+          <div class="button-grid" id="typeFilters">
+            <button class="filter-btn active" data-type="all" type="button">All</button>
+            <button class="filter-btn" data-type="Unit District" type="button">Unit</button>
+            <button class="filter-btn" data-type="Elementary District" type="button">Elementary</button>
+            <button class="filter-btn" data-type="High School District" type="button">High school</button>
+          </div>
+        </div>
+
+        <div class="control-section">
+          <label class="check-row"><input id="iftOnly" type="checkbox"> <span>IFT-AFT districts only</span></label>
+        </div>
+
+        <div class="control-section legend-block">
+          <div class="control-heading">Legend</div>
+          <div id="legend"></div>
+        </div>
+
+        <div class="control-section explainer">
+          <div class="control-heading">What does “adequacy” mean?</div>
+          <p>Illinois calculates an adequacy target for each district based on the resources needed to educate its students. A district at 75% has only about three-quarters of the resources the formula says it needs.</p>
+        </div>
+
+        <div class="control-section mini-note">
+          <div id="joinStatus">Loading district boundaries…</div>
+        </div>
+      </aside>
+
+      <section class="map-wrap">
+        <div id="map"></div>
+        <button id="resetView" class="map-action" type="button">Reset Illinois view</button>
+        <div class="map-help">Tip: overlapping elementary and high-school districts can occupy the same area. Use the district-type buttons to isolate a layer.</div>
+      </section>
+
+      <aside id="detailPanel" class="detail-panel" aria-live="polite">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">IL</div>
+          <h2>Select a district</h2>
+          <p>Click a district on the map or use search to see its funding gap and FY2027 EBF details.</p>
+        </div>
+        <div id="districtDetails" class="district-details hidden"></div>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      <p>FY2027 funding data from the supplied ISBE-based district dataset. Boundary geography represents the 2024–25 school year from the National Center for Education Statistics EDGE program.</p>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9coqIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="data/ebf_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
